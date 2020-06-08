@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>John's Blog</title>
+
+	<link rel="stylesheet" type="text/css" href="social/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="social/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="social/fonts/iconic/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" type="text/css" href="social/css/util.css">
+	<link rel="stylesheet" type="text/css" href="social/css/main.css">
+</head>
+
+<body>
+
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url(statics/images/19.jpg);">
+			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+				<form id="visitor-register-form" th:action="@{~/visitorSignUp}" method="post" class="login100-form validate-form">
+					<span class="login100-form-title p-b-49">Sign Up</span>
+					<div class="wrap-input100 validate-input m-b-23" data-validate="Please enter your phone number and nation code">
+						<span class="label-input100">Phone (nationCode-phoneNumber)</span>
+						<input class="input100" type="text" id="username" name="username" placeholder="Please enter your phone number" autocomplete="off">
+						<span class="focus-input100" data-symbol="&#xf206;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-23" data-validate="Please enter your password">
+						<span class="label-input100">Password</span>
+						<input class="input100" type="password" id="password" name="password" placeholder="Please enter your password">
+						<span class="focus-input100" data-symbol="&#xf190;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-23" data-validate="Please enter your password again">
+						<span class="label-input100">Re-Password</span>
+						<input class="input100" type="password" id="repassword" name="repassword" placeholder="Please enter your password again">
+						<span class="focus-input100" data-symbol="&#xf191;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-23" data-validate="Please enter the verification code">
+						<span class="label-input100">Verification Code</span>
+						<input class="input100" type="text" id="sms" name="sms" placeholder="Please enter the verification code">
+						<span class="focus-input100" data-symbol="&#xf130;"></span>
+					</div>
+
+					<div class="text-center p-t-1 p-b-31 text-danger">
+						<span id="errorMsg" hidden></span>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button onclick="submitButton()" type="button" class="login100-form-btn">Sign Up</button>
+						</div>
+					</div>
+
+					<div class="txt1 text-center p-t-54 p-b-20">
+						<span>Third Party Log In</span>
+					</div>
+
+					<div class="flex-c-m">
+						<a href="/qqLogin/wechat" class="login100-social-item bg1">
+							<i class="fa fa-wechat"></i>
+						</a>
+
+						<a href="/qqLogin/callback.do" class="login100-social-item bg2">
+							<i class="fa fa-qq"></i>
+						</a>
+					</div>
+
+					<div class="flex-col-c p-t-25">
+						<a th:href="@{~/login}" class="txt2">Log In with your Phone</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script src="social/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="social/js/main.js"></script>
+	<script src="layer/layer.js"></script>
+	<script>
+		let verificationCode = ""; // verification code sent from the back end
+
+		const setErrorMessage = (hasError, errorMessage) => {
+			if (hasError) {
+				$("#errorMsg").html(errorMessage);
+				$("#errorMsg").attr("hidden", false);
+			} else {
+				$("#errorMsg").attr("hidden", true);
+			}
+		}
+
+		$("#username").blur(() => {
+			// Validate phone number
+			const username = $("#username").val();
+			const items = username.split('-');
+			const nationCode = items[0];
+			const phone = items[1];
+			let phoneRegex;
+
+			if (nationCode === '1') {
+				phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+			} else if (nationCode === '86') {
+				phoneRegex = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
+			} else {
+				layer.msg("Sorry, not support in this area yet");
+				return;
+			}
+
+			if (phoneRegex.test(phone)) {
+				// Use Ajax to send message
+				$.ajax({
+					type: "POST",
+					url: "/sendSMS",
+					dataType: "json",
+					data: {
+						"nationCode": nationCode,
+						"phone": phone
+					},
+					success: data => {
+						if (data.code) {
+							verificationCode = data.code.toString();
+							layer.msg("Verification code has been sent!");
+							setErrorMessage(false, "");
+						} else {
+							setErrorMessage(true, "This phone has been registered! Please log in")
+						}
+					}
+				});
+			} else {
+				layer.msg("Your phone number is invalid!");
+			}
+
+		});
+
+		$("#repassword").blur(() => {
+			const password = $("#password").val();
+			const repassword = $("#repassword").val();
+
+			if (password !== repassword) {
+				setErrorMessage(true, "Two passwords are not the same!")
+			} else {
+				setErrorMessage(false, "")
+			}
+		});
+
+		$("#sms").bind("input propertychange", () => {
+			const inputCode = $("#sms").val();
+
+			if (inputCode === verificationCode) {
+				layer.msg("Correct verification code");
+				setErrorMessage(false, "");
+			} else {
+				setErrorMessage(true, "Your verification code is not correct");
+			}
+		});
+
+		const submitButton = () => {
+			if ($("#errorMsg").is(":hidden")) {
+				$("#visitor-register-form").submit();
+			} else {
+				layer.msg("Please fix the error before submit!");
+			}
+		}
+	</script>
+</body>
+
+</html>

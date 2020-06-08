@@ -1,0 +1,392 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>John's Blog</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+
+<link rel="stylesheet" type="text/css" href="statics/css/index.css" media="all" />
+
+<!-- button -->
+<link rel="stylesheet" type="text/css" href="statics/css/mycss.css">
+<!--input-->
+<script type="text/javascript" src="statics/js/classie.js"></script>
+<link rel="stylesheet" type="text/css" href="statics/css/component.css" />
+
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+
+</head>
+<style>
+body.custom-background {
+	background: #fff
+}
+
+.container {
+	padding: 10px 0;
+}
+</style>
+
+<body class="home blog custom-background round-avatars">
+	<div class="Yarn_Background" style="background-image: url(statics/images/6.png);"></div>
+	<div th:replace="~{fragments/header::header}"></div>
+	<div id="main" class="content">
+
+		<form id="form_blog" th:action="@{~/saveBlog}" method="post">
+			<input required name="cover" id="input_blog_cover" type="text" hidden />
+			<input name="image" id="input_blog_image" type="text" hidden />
+			<input name="moodId" id="input_mood_id" type="text" hidden />
+
+			<div class="container">
+				<section class="post_content">
+					<header class="post_header">
+						<p class="status_btn" style="font-size: xx-large; color: #918f90;">Write a blog</p>
+					</header>
+
+					<br>
+
+					<!-- Write a blog -->
+					<div class="post post-layout-list" data-aos="fade-up">
+						<!-- Title -->
+						<span class="input input--minoru">
+							<label class="input__label input__label--minoru" for="title">
+								<span style="font-size: x-large;" class="input__label-content input__label-content--minoru">Title</span>
+							</label>
+							<textarea required name="title" id="title" style="background-color: #fafafa;font-size: x-large; position: relative; left: 130px; width: 500px; height: 75px;" class="input__field input__field--minoru"></textarea>
+						</span>
+						<!-- Main Content -->
+						<span class="input input--minoru">
+							<label class="input__label input__label--minoru" for="content">
+								<span style="font-size: x-large;" class="input__label-content input__label-content--minoru">Main Content</span>
+							</label>
+							<textarea required name="content" id="content" style="background-color: #fafafa;font-size: x-large; position: relative; left: 500px; width: 870px; height: 150px;" class="input__field input__field--minoru"></textarea>
+						</span>
+						<!-- Topics -->
+						<span class="input input--minoru">
+							<label class="input__label input__label--minoru" for="topics">
+								<span style="font-size: x-large;" class="input__label-content input__label-content--minoru">Topics</span>
+							</label>
+							<textarea required name="topicsStr" id="topics" style="background-color: #fafafa;font-size: x-large; position: relative; left: 130px; width: 500px; height: 75px;" class="input__field input__field--minoru"></textarea>
+						</span>
+						<!-- Button to add a cover -->
+						<div class="button_su" style="width: 130px; height: 50px; position: relative; left: -305px; bottom: -220px">
+							<span class="su_button_circle"> </span>
+							<a onclick="uploadCover()"  class="button_su_inner">
+								<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 15px; line-height: 1">Add Cover</span>
+							</a>
+						</div>
+						<header class="slide post_header">
+							<p title="switch down" class="btn-slide status_btn" style="color: #918f90;position: relative; bottom: -60px">Add More</p>
+						</header>
+					</div>
+				</section>
+
+				<!-- Dividing line -->
+				<svg id="upTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+					<path d="M0 0 L50 100 L100 0 Z"></path>
+				</svg>
+
+				<!-- Folding part -->
+				<div id="panel" style="display: none;">
+					<div class="comment-area">
+						<section class="comments">
+
+							<div class="post post-layout-list" data-aos="fade-up">
+								<!-- Sub-title -->
+								<span class="input input--minoru">
+									<label class="input__label input__label--minoru" for="sub-title">
+										<span style="font-size: x-large;" class="input__label-content input__label-content--minoru">Sub-title</span>
+									</label>
+									<textarea name="subTitle" id="sub-title" style="font-size: x-large; position: relative; left: 130px; width: 500px; height: 75px;" class="input__field input__field--minoru"></textarea>
+								</span>
+								<!-- Sub-content -->
+								<span class="input input--minoru">
+									<label class="input__label input__label--minoru" for="sub-content">
+										<span style="font-size: x-large;" class="input__label-content input__label-content--minoru">Sub-content</span>
+									</label>
+									<textarea name="subContent" id="sub-content" style="font-size: x-large; position: relative; left: 500px; width: 870px; height: 150px;" class="input__field input__field--minoru"></textarea>
+								</span>
+								<!-- Button to add an image  -->
+								<div class="button_su" style="width: 130px; height: 50px; position: relative; left: -305px; bottom: -300px">
+									<span class="su_button_circle"> </span>
+									<a onclick="uploadImage()" class="button_su_inner">
+										<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 19px">Add Image</span>
+									</a>
+								</div>
+								<!-- Button to add a mood -->
+								<div class="button_su" style="width: 130px; height: 50px; position: relative; left: 36px; bottom: -300px">
+									<span class="su_button_circle"> </span>
+									<a onclick="selectMood()" class="button_su_inner">
+										<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 19px">Add Mood</span>
+									</a>
+								</div>
+							</div>
+
+						</section>
+					</div>
+				</div>
+
+				<!-- Dividing line -->
+				<svg id="dwTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+					<path d="M0 0 L50 100 L100 0 Z"></path>
+				</svg>
+
+				<!-- Preview and Publish buttons -->
+				<div class="wrapper">
+					<div class="post post-layout-list" data-aos="fade-up">
+						<!-- Button to preview the blog -->
+						<div class="button_su" style="width: 130px; height: 50px; position: relative; left: 100px; bottom: -90px">
+							<span class="su_button_circle"> </span>
+							<a onclick="previewBlog()" class="button_su_inner">
+								<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 7px">Preview</span>
+							</a>
+						</div>
+						<!-- Button to publish the blog -->
+						<button onclick="saveBlog()" class="bubbly-button" style="width: 150px; height: 50px; position: relative; left: 430px; bottom: -48px">
+							<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 2px">Publish</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+
+	</div>
+
+	<form id="upload_image" th:action="@{~/uploadImage}" method="post" enctype="multipart/form-data" hidden >
+		<input id="input_image" onchange="addImage(this)" type="file" name="file" />
+	</form>
+
+	<div th:replace="~{fragments/footer::footer}"></div>
+
+	<script type='text/javascript' src='statics/js/jquery.min.js'></script>
+	<script type='text/javascript' src='statics/js/plugins.js'></script>
+	<script type='text/javascript' src='statics/js/script.js'></script>
+	<script type='text/javascript' src='statics/js/particles.js'></script>
+	<script type='text/javascript' src='statics/js/aos.js'></script>
+	<script type='text/javascript' src='layer/layer.js'></script>
+
+	<script>
+		/* Preview the new blog */
+		function previewBlog() {
+			// Put a <form> in the separate page
+			const formStr =
+			'<form action="http://localhost:8080/previewBlog" method="post" hidden>' +
+				'<input name="cover" id="input_blog_cover" type="text" value="' + $("#input_blog_cover").val() + '"/>' +
+				'<input name="image" id="input_blog_image" type="text" value="' + $("#input_blog_image").val() + '"/>' +
+				'<input name="moodId" id="input_blog_mood_id" type="text" value="' + $("#input_mood_id").val() + '"/>' +
+				'<textarea name="title" id="textarea_blog_title">' + $("#title").val() + '</textarea>' +
+				'<textarea name="content" id="textarea_blog_content">' + $("#content").val() + '</textarea>' +
+				'<textarea name="topicsStr" id="textarea_blog_topics">' + $("#topics").val() + '</textarea>' +
+				'<textarea name="subTitle" id="textarea_blog_sub-title">' + $("#sub-title").val() + '</textarea>' +
+				'<textarea name="subContent" id="textarea_blog_sub-content">' + $("#sub-content").val() + '</textarea>' +
+			'</form>';
+
+			// Open the separate page
+			const win = window.open("");
+
+			// Put the form inside the separate page
+			win.document.body.innerHTML = formStr;
+
+			// Submit the form inside the separate page
+			win.document.forms[0].submit();
+
+			// Obtain the data in the back end
+			// Display the new blog
+		}
+
+
+		/* Select a Mood for the blog */
+		function selectMood() {
+			// Open a subpage
+			layer.open({
+				type: 2,
+				area: ['1200px', '720px'],
+				fixed: false, // Not fixed
+				maxmin: true,
+				content: 'selectMoods'
+			});
+
+			// Show all moods available on the subpage
+			// Select the mood in the subpage
+			// Send the id of the mood selected by user to the input_mood_id input field
+		}
+
+		/* Publish a new blog */
+		function saveBlog() {
+			let enableSubmit = false;
+
+			const title = $('#title').val();
+			const content = $('#content').val();
+			const topics = $('#topics').val();
+			const cover = $('#input_blog_cover').val();
+
+			if (title === '') {
+				layer.msg('This blog wants a Title');
+			} else if (content === '') {
+				layer.msg('This blog wants some Content');
+			} else if (topics === '') {
+				layer.msg('This blog wants some Topics');
+			} else if (cover === '') {
+				layer.msg('This blog wants a Cover');
+			} else {
+				enableSubmit = true;
+			}
+
+			if (enableSubmit) {
+				$("#form_blog").submit();
+			}
+		}
+	</script>
+
+	<!-- Upload images -->
+	<script th:inline="javascript">
+		let coverClick = false;
+		let imageClick = false;
+
+		// Upload cover of the blog
+		function uploadCover() {
+			coverClick = true;
+			imageClick = false;
+			$("#input_image").click();
+		}
+
+		// Upload image in the blog
+		function uploadImage() {
+			coverClick = false;
+			imageClick = true;
+			$("#input_image").click();
+		}
+
+		// The onchange event of images
+		function addImage(image) {
+			const formData = new FormData($("#upload_image")[0]);
+
+			if (coverClick) {
+				$("#input_blog_cover").val(image.files[0].name);
+			}
+
+			if (imageClick) {
+				$("#input_blog_image").val(image.files[0].name);
+			}
+
+			$.ajax({
+				type: "POST",
+				url: "/uploadImage",
+				data: formData,
+				dataType: "text",
+				async: false,
+				cache: false,
+				processData: false,
+				contentType: false,
+				success: function() {
+					layer.msg("Upload Successfully");
+				}
+			});
+		}
+	</script>
+
+	<!-- 按钮样式 -->
+	<!-- button样式 -->
+	<script>
+		$(".button_su_inner").mouseenter(function(e) {
+			var parentOffset = $(this).offset();
+
+			var relX = e.pageX - parentOffset.left;
+			var relY = e.pageY - parentOffset.top;
+			$(this).prev(".su_button_circle").css({
+				"left" : relX,
+				"top" : relY
+			});
+			$(this).prev(".su_button_circle").removeClass("desplode-circle");
+			$(this).prev(".su_button_circle").addClass("explode-circle");
+
+		});
+
+		$(".button_su_inner").mouseleave(function(e) {
+
+			var parentOffset = $(this).offset();
+
+			var relX = e.pageX - parentOffset.left;
+			var relY = e.pageY - parentOffset.top;
+			$(this).prev(".su_button_circle").css({
+				"left" : relX,
+				"top" : relY
+			});
+			$(this).prev(".su_button_circle").removeClass("explode-circle");
+			$(this).prev(".su_button_circle").addClass("desplode-circle");
+
+		});
+	</script>
+	<!-- button click效果 -->
+	<script>
+		var animateButton = function(e) {
+
+			e.preventDefault;
+			//reset animation
+			e.target.classList.remove('animate');
+
+			e.target.classList.add('animate');
+			setTimeout(function() {
+				e.target.classList.remove('animate');
+			}, 700);
+		};
+
+		var classname = document.getElementsByClassName("bubbly-button");
+
+		for (var i = 0; i < classname.length; i++) {
+			classname[i].addEventListener('click', animateButton, false);
+		}
+	</script>
+
+	<!-- input -->
+	<script type="text/javascript">
+		(function() {
+			// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+			if (!String.prototype.trim) {
+				(function() {
+					// Make sure we trim BOM and NBSP
+					var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+					String.prototype.trim = function() {
+						return this.replace(rtrim, '');
+					};
+				})();
+			}
+
+			[].slice.call(document.querySelectorAll('input.input__field'))
+					.forEach(function(inputEl) {
+						// in case the input is already filled..
+						if (inputEl.value.trim() !== '') {
+							classie.add(inputEl.parentNode, 'input--filled');
+						}
+
+						// events:
+						inputEl.addEventListener('focus', onInputFocus);
+						inputEl.addEventListener('blur', onInputBlur);
+					});
+
+			function onInputFocus(ev) {
+				classie.add(ev.target.parentNode, 'input--filled');
+			}
+
+			function onInputBlur(ev) {
+				if (ev.target.value.trim() === '') {
+					classie.remove(ev.target.parentNode, 'input--filled');
+				}
+			}
+		})();
+	</script>
+
+	<script type="text/javascript">
+		window.onscroll = function() {
+			var scrollTop = document.body.scrollTop;
+			if (scrollTop >= 200) {
+				document.getElementById("NextPrevPosts").style.display = "none"
+			} else {
+				document.getElementById("NextPrevPosts").style.display = "block"
+			}
+		}
+	</script>
+</body>
+
+</html>

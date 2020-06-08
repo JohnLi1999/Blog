@@ -1,0 +1,340 @@
+@charset "UTF-8";
+
+body {
+  font-family: 'Inconsolata', sans-serif;
+  background: #2a364f;
+}
+
+h1{
+  text-align: center;
+  color: rgba(255,255,255,0.8);
+}
+
+.credit{
+  text-align: center;
+  color: rgba(255,255,255,0.4);
+
+}
+
+.content{
+  padding-top: 45px;
+  padding-bottom: 20px;
+}
+
+.button_container{
+    width: 176px;
+    margin: 0 auto;
+    margin-top: 30px;
+    padding-top: 40px;
+}
+
+.button_su{
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  border-radius: 3px;
+  margin-bottom: 30px;
+}
+
+.su_button_circle{
+  background-color: red;
+  border-radius: 1000px;
+  position: absolute;
+  left:0;
+  top:0;
+  width: 0px;
+  height: 0px;
+  margin-left: 0px;
+  margin-top: 0px;
+  pointer-events: none;
+  /*animation-timing-function: ease-in-out; */
+}
+
+.button_su_inner{
+    display: inline-block;
+    background: #ccd0f5;
+    color: #F4F4F4;
+    font-size: 16px;
+    font-weight: normal;
+    width: 132px;
+    text-align: center;
+    border-radius: 3px;
+    transition: 400ms;
+    text-decoration: none;
+    padding: 22px;
+    z-index: 100000;
+}
+
+.button_text_container{
+   position:relative;
+   z-index: 10000;
+}
+
+.explode-circle {
+   animation: explode 0.5s forwards;
+
+}
+
+.desplode-circle{
+   animation: desplode 0.5s forwards;
+}
+
+@keyframes explode {
+  0% {
+    width: 0px;
+    height: 0px;
+    margin-left: 0px;
+    margin-top: 0px;
+    background-color: rgba(42, 53, 80,0.2);
+  }
+  100% {
+    width: 400px;
+    height: 400px;
+    margin-left: -200px;
+    margin-top: -200px;
+    background-color: rgba(20, 180, 87,0.8);
+  }
+}
+
+@keyframes desplode {
+  0% {
+    width: 400px;
+    height: 400px;
+    margin-left: -200px;
+    margin-top: -200px;
+    background-color: rgba(20, 180, 87,0.8);
+  }
+  100% {
+    width: 0px;
+    height: 0px;
+    margin-left: 0px;
+    margin-top: 0px;
+    background-color: rgba(129, 80, 108,0.6);
+  }
+}
+
+
+
+.bubbly-button {
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  display: inline-block;
+  font-size: 1em;
+  padding: 1em 2em;
+  margin-top: 100px;
+  margin-bottom: 60px;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #ff8fc8;
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
+  box-shadow: 0 2px 25px rgba(255, 0, 130, 0.5);
+}
+.bubbly-button:focus {
+  outline: 0;
+}
+.bubbly-button:before, .bubbly-button:after {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 140%;
+  height: 100%;
+  left: -20%;
+  z-index: -1000;
+  transition: all ease-in-out 0.5s;
+  background-repeat: no-repeat;
+}
+.bubbly-button:before {
+  display: none;
+  top: -75%;
+  background-image: radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, transparent 20%, #ff0081 20%, transparent 30%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, transparent 10%, #ff0081 15%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%);
+  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
+}
+.bubbly-button:after {
+  display: none;
+  bottom: -75%;
+  background-image: radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, transparent 10%, #ff0081 15%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%);
+  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
+}
+.bubbly-button:active {
+  transform: scale(0.9);
+  background-color: #e60074;
+  box-shadow: 0 2px 25px rgba(255, 0, 130, 0.2);
+}
+.bubbly-button.animate:before {
+  display: block;
+  animation: topBubbles ease-in-out 0.75s forwards;
+}
+.bubbly-button.animate:after {
+  display: block;
+  animation: bottomBubbles ease-in-out 0.75s forwards;
+}
+
+@keyframes topBubbles {
+  0% {
+    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
+  }
+  50% {
+    background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 90% 30%;
+  }
+  100% {
+    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%, 50% 40%, 65% 10%, 90% 20%;
+    background-size: 0% 0%, 0% 0%,  0% 0%,  0% 0%,  0% 0%,  0% 0%;
+  }
+}
+@keyframes bottomBubbles {
+  0% {
+    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%, 70% 0%;
+  }
+  50% {
+    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%, 105% 0%;
+  }
+  100% {
+    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
+    background-size: 0% 0%, 0% 0%,  0% 0%,  0% 0%,  0% 0%,  0% 0%;
+  }
+}
+
+
+/*动态标签*/
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+
+.wrapper {
+	width: 1200px;
+	height: 300px;
+	margin: 0 auto;
+}
+
+.wrapper p {
+	padding-top: 150px;
+	line-height: 27px;
+	color: #999;
+	font-size: 14px;
+	text-align: center;
+}
+
+.tagcloud {
+	position: relative;
+	margin-top: -150px;
+}
+
+.tagcloud a {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	padding: 11px 30px;
+	color: #333;
+	font-size: 16px;
+	border: 1px solid #e6e7e8;
+	border-radius: 18px;
+	background-color: #f2f4f8;
+	text-decoration: none;
+	white-space: nowrap;
+	-o-box-shadow: 6px 4px 8px 0 rgba(151, 142, 136, .34);
+	-ms-box-shadow: 6px 4px 8px 0 rgba(151, 142, 136, .34);
+	-moz-box-shadow: 6px 4px 8px 0 rgba(151, 142, 136, .34);
+	-webkit-box-shadow: 6px 4px 8px 0 rgba(151, 142, 136, .34);
+	box-shadow: 6px 4px 8px 0 rgba(151, 142, 136, .34);
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.Shadow(Strength=4,Direction=135, Color='#000000')";
+	/*兼容ie7/8*/
+	filter: progid:DXImageTransform.Microsoft.Shadow(color='#969696',
+		Direction=125, Strength=9);
+	/*strength是阴影大小，direction是阴影方位，单位为度，可以为负数，color是阴影颜色 （尽量使用数字）使用IE滤镜实现盒子阴影的盒子必须是行元素或以行元素显示（block或inline-block;）*/
+}
+
+.tagcloud a:hover {
+	color: #3385cf;
+}
+
+/*标签*/
+.mybox {
+	width: 15%;
+	min-width: 150px;
+	display: block;
+	height: 50px;
+	position: relative;
+	border-radius: 5px;
+	background: linear-gradient(to right, #abbd73 35%, #d6e2ad 100%);
+	margin-bottom: 40px;
+	padding: 15px 25px 0 40px;
+	color: darkslategray;
+	box-shadow: 1px 2px 1px -1px #777;
+	transition: background 200ms ease-in-out;
+	text-align: right;
+}
+
+.mybox a {
+	color: #fff;
+	text-decoration: none;
+}
+
+.shadow {
+	position: relative;
+}
+
+.shadow:before {
+	z-index: -1;
+	position: absolute;
+	content: "";
+	bottom: 13px;
+	right: 7px;
+	width: 75%;
+	top: 0;
+	box-shadow: 0 15px 10px #777;
+	-webkit-transform: rotate(4deg);
+	transform: rotate(4deg);
+	transition: all 150ms ease-in-out;
+}
+
+.mybox:hover {
+	background: linear-gradient(to right, #abbd73 0%, #abbd73 100%);
+}
+
+.shadow:hover::before {
+	-webkit-transform: rotate(0deg);
+	transform: rotate(0deg);
+	bottom: 20px;
+	z-index: -10;
+}
+
+.circle {
+	position: absolute;
+	top: 14px;
+	left: 15px;
+	border-radius: 50%;
+	box-shadow: inset 1px 1px 1px 0px rgba(0, 0, 0, 0.5), inset 0 0 0 25px
+		antiquewhite;
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	text-align: right;
+	padding: 0 20px 0 0;
+}
+/*图片预览*/
+.gallery img {
+	height: 100%;
+}
+
+.gallery a {
+	width: 200px;
+	height: 100px;
+	display: inline-block;
+	overflow: hidden;
+	margin: 4px 6px;
+}
+
+.baguetteBoxOne {
+	width: 1020px;
+	margin: 40px auto 0 auto;
+}
