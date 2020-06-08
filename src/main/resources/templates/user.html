@@ -1,0 +1,356 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>John's Blog</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<link rel="stylesheet" type="text/css" href="statics/css/index.css" media="all" />
+<link href="css/cropper.css" rel="stylesheet">
+<script src="js/cropper.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<!-- button -->
+<link rel="stylesheet" type="text/css" href="statics/css/mycss.css">
+<!--input-->
+<script type="text/javascript" src="statics/js/classie.js"></script>
+<link rel="stylesheet" type="text/css" href="statics/css/component.css" />
+
+</head>
+<body class="home blog custom-background round-avatars">
+	<div class="Yarn_Background" style="background-image: url( statics/images/47fb3c_.jpg);"></div>
+	<div th:replace="~{fragments/header::header}"></div>
+
+	<div class="container">
+		<div class="posts-list js-posts">
+
+			<div class="post post-layout-list" data-aos="fade-up" sec:authorize="hasAnyAuthority('ADMIN')">
+				<div class="status_list_item icon_kyubo">
+					<div class="status_section">
+						<p class="status_btn">Avatar:</p>
+						<br />
+						<div align="center" class="box" style="width: 300px; height: 200px; position: relative; right: -70px; bottom: 0px">
+							<img id="image" th:src="|upload/avatar/${owner.avatar}|">
+						</div>
+
+						<div class="small" style="overflow: hidden; width: 130px; height: 130px; position: relative; right: -536px; bottom: 164px"></div>
+						<!-- Update avatar button -->
+						<div class="button_su" style="width: 130px; height: 50px; position: relative; right: -160px; bottom: 50px">
+							<span class="su_button_circle"> </span>
+							<a onclick="updateAvatar()" class="button_su_inner">
+								<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 19px">Update Avatar</span>
+							</a>
+						</div>
+						<!-- Submit button -->
+						<div class="button_su" style="width: 130px; height: 50px; position: relative; left: 400px; bottom: 50px">
+							<span class="su_button_circle"> </span>
+							<a onclick="uploadAvatar()" class="button_su_inner">
+								<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 8px">Upload</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Update username -->
+			<div class="post post-layout-list" data-aos="fade-up">
+				<div class="status_list_item icon_kyubo">
+					<div class="status_section">
+						<div class="col-md-5 mb-3">
+							<label class="status_btn">Name:</label>
+						</div>
+
+						<div sec:authorize="hasAnyAuthority('ADMIN')">
+							<!-- Update username input -->
+							<span class="input input--hoshi">
+							<input id="input_username" style="font-size: x-large;" class="input__field input__field--hoshi" type="text" />
+							<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="input_username">
+								<span style="color: #C3B091" class="input__label-content input__label-content--hoshi" th:text="|Previous: ${owner.username}|"></span>
+							</label>
+						</span>
+
+							<!-- Update username button-->
+							<div class="button_su" style="width: 130px; height: 50px; position: relative; left: 200px; bottom: -25px">
+								<span class="su_button_circle"> </span>
+								<a onclick="updateUsername()" class="button_su_inner">
+									<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 19px">Update Username</span>
+								</a>
+							</div>
+						</div>
+
+						<div sec:authorize="hasAnyAuthority('VISITOR')">
+							<label class="status_btn" th:text="${owner.username}"></label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Update password -->
+			<div class="post post-layout-list" data-aos="fade-up" sec:authorize="hasAnyAuthority('ADMIN')">
+				<div class="status_list_item icon_kyubo">
+					<div class="status_section">
+						<div class="col-md-5 mb-3">
+							<label class="status_btn">Password:</label>
+						</div>
+
+						<!-- Update password input -->
+						<span class="input input--hoshi">
+							<input id="input_password" style="font-size: x-large;" class="input__field input__field--hoshi" type="text" />
+							<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="input_password">
+								<span style="color: #C3B091" class="input__label-content input__label-content--hoshi" th:text="|Previous: ${owner.password}|"></span>
+							</label>
+						</span>
+
+						<!-- Update password button -->
+						<div class="button_su" style="width: 130px; height: 50px; position: relative; left: 200px; bottom: -25px">
+							<span class="su_button_circle"> </span>
+							<a onclick="updatePassword()" class="button_su_inner">
+								<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 19px">Update Password</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Update personal sign (what's up) -->
+			<div class="post post-layout-list" data-aos="fade-up">
+				<div class="status_list_item icon_kyubo">
+					<div class="status_section">
+						<div class="col-md-5 mb-3">
+							<label class="status_btn">Personal Sign:</label>
+						</div>
+
+						<div sec:authorize="hasAnyAuthority('ADMIN')">
+							<!-- Update personal sign input -->
+							<span class="input input--hoshi">
+								<input id="input_personal_sign" style="font-size: x-large;" class="input__field input__field--hoshi" type="text" />
+								<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="input_personal_sign">
+									<span style="color: #C3B091" class="input__label-content input__label-content--hoshi" th:text="'Previous: ' + ${owner.personalSign}"></span>
+								</label>
+							</span>
+
+							<!-- Update personal sign button -->
+							<div class="button_su" style="width: 130px; height: 50px; position: relative; left: 200px; bottom: -25px">
+								<span class="su_button_circle"> </span>
+								<a onclick="updatePersonalSign()" class="button_su_inner">
+									<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 19px">Update Sign</span>
+								</a>
+							</div>
+						</div>
+						<div sec:authorize="hasAnyAuthority('VISITOR')">
+							<label class="status_btn" th:text="${owner.personalSign}"></label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Upload original (not cropped) image -->
+	<form id="upload_image" method="post" enctype="multipart/form-data" style="display: none">
+		<input id="input_image" name="file" type="file" />
+	</form>
+
+	<!-- Upload Avatar (cropped image) in Base64 form -->
+	<form action="/uploadAvatar" id="upload_avatar" method="post" style="display: none">
+		<input id="input_avatar" name="base64" type="text">
+		<button type="submit"></button>
+	</form>
+
+	<div th:replace="~{fragments/footer::footer}"></div>
+
+	<script type='text/javascript' src='statics/js/jquery.min.js'></script>
+	<script type='text/javascript' src='statics/js/plugins.js'></script>
+	<script type='text/javascript' src='statics/js/script.js'></script>
+	<script type='text/javascript' src='statics/js/particles.js'></script>
+	<script type='text/javascript' src='statics/js/aos.js'></script>
+	<script src="layer/layer.js"></script>
+
+	<script type='text/javascript' th:inline='javascript'>
+		// Update username
+		function updateUsername(){
+			// Get data in the input
+			const username = $("#input_username").val();
+			const param = '?username=' + username;
+
+			// Send request using XMLHttpRequest
+			const xhr = new XMLHttpRequest();
+			// Initialize the request - set synchronous flag to false
+			xhr.open('get', '/updateUsername' + param, false);
+			// Callback function after successfully sending the request
+			xhr.onload = function() {
+				window.location = '/getOwner';
+			}
+			// Send the request
+			xhr.send();
+		}
+
+		// Update password
+		function updatePassword() {
+			// Get data in the input
+			const password = $("#input_password").val();
+			const param = '?password=' + password;
+
+			// Send request using XMLHttpRequest
+			const xhr = new XMLHttpRequest();
+			// Initialize the request - set synchronous flag to false
+			xhr.open('get', '/updatePassword' + param, false);
+			// Callback function after successfully sending the request
+			xhr.onload = function() {
+				window.location = '/getOwner';
+			}
+			// Send the request
+			xhr.send();
+		}
+
+		// Update personal sign
+		function updatePersonalSign() {
+			// Get data in the input
+			const personalSign = $("#input_personal_sign").val();
+			const param = '?personalSign=' + personalSign;
+
+			// Send request using XMLHttpRequest
+			const xhr = new XMLHttpRequest();
+			// Initialize the request - set synchronous flag to false
+			xhr.open('get', '/updatePersonalSign' + param, false);
+			// Callback function after successfully sending the request
+			xhr.onload = function() {
+				window.location = '/getOwner';
+			}
+			// Send the request
+			xhr.send();
+		}
+    </script>
+
+	<!-- Cropper -->
+	<script type="text/javascript" th:inline="javascript">
+		const image = document.getElementById("image");
+
+		const cropper = new Cropper(image, {
+			// Aspect Ratio
+			aspectRatio : 1 / 1,
+			// View mode
+			viewMode : 1,
+			preview : ".small",
+		});
+
+		// User an onChange event to handle when the user is changing the avatar
+		$("#input_image").on("change", function() {
+			// Obtain image name
+			const imageName = this.files[0].name;
+
+			// Set form data
+			const formData = new FormData($("#upload_image")[0]);
+
+			$.ajax({
+				type: "POST",
+				url: "/uploadImage",
+				data: formData,
+				dataType: "text",
+				async: false,
+				cache: false,
+				processData: false,
+				contentType: false,
+				success: function() {
+					// Re-display the image
+					cropper.replace("/upload/" + imageName, false);
+				}
+			});
+		});
+
+		// Update avatar - upload the original image
+		function updateAvatar() {
+			$("#input_image").click();
+		}
+
+		// Upload avatar - upload the cropped image
+		function uploadAvatar() {
+			/* Obtain image in Base64 encoding form */
+			// Get width
+			const width = cropper.getCropBoxData().width;
+			// Get height
+			const height = cropper.getCropBoxData().height;
+			// Get Base64 URL
+			const base64URL = cropper.getCroppedCanvas({width: width, height: height}).toDataURL("image/jpeg");
+
+			/* Upload the Base64 code to the back end server */
+			$("#input_avatar").val(base64URL);
+			$("#upload_avatar").submit();
+		}
+	</script>
+
+	<!-- Button Style -->
+	<script>
+		$(".button_su_inner").mouseenter(function(e) {
+			const parentOffset = $(this).offset();
+
+			const relX = e.pageX - parentOffset.left;
+			const relY = e.pageY - parentOffset.top;
+			$(this).prev(".su_button_circle").css({
+				"left" : relX,
+				"top" : relY
+			});
+			$(this).prev(".su_button_circle").removeClass("desplode-circle");
+			$(this).prev(".su_button_circle").addClass("explode-circle");
+
+		});
+
+		$(".button_su_inner").mouseleave(function(e) {
+
+			const parentOffset = $(this).offset();
+
+			const relX = e.pageX - parentOffset.left;
+			const relY = e.pageY - parentOffset.top;
+			$(this).prev(".su_button_circle").css({
+				"left" : relX,
+				"top" : relY
+			});
+			$(this).prev(".su_button_circle").removeClass("explode-circle");
+			$(this).prev(".su_button_circle").addClass("desplode-circle");
+
+		});
+	</script>
+
+	<!-- Input Style -->
+	<script type="text/javascript">
+		(function() {
+			// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+			if (!String.prototype.trim) {
+				(function() {
+					// Make sure we trim BOM and NBSP
+					const rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+					String.prototype.trim = function() {
+						return this.replace(rtrim, '');
+					};
+				})();
+			}
+
+			[].slice.call(document.querySelectorAll('input.input__field'))
+					.forEach(function(inputEl) {
+						// in case the input is already filled..
+						if (inputEl.value.trim() !== '') {
+							classie.add(inputEl.parentNode, 'input--filled');
+						}
+
+						// events:
+						inputEl.addEventListener('focus', onInputFocus);
+						inputEl.addEventListener('blur', onInputBlur);
+					});
+
+			function onInputFocus(ev) {
+				classie.add(ev.target.parentNode, 'input--filled');
+			}
+
+			function onInputBlur(ev) {
+				if (ev.target.value.trim() === '') {
+					classie.remove(ev.target.parentNode, 'input--filled');
+				}
+			}
+		})();
+	</script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>John's Blog</title>
+<link rel="stylesheet" type="text/css" href="statics/css/index.css" media="all" />
+<link rel="stylesheet" type="text/css" href="statics/css/mycss.css" media="all" />
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<!-- For Topics -->
+<script type="text/javascript" src="statics/js/tagcloud.js"></script>
+
+
+<!--input-->
+<script type="text/javascript" src="statics/js/classie.js"></script>
+<link rel="stylesheet" type="text/css" href="statics/css/component.css" />
+
+
+
+</head>
+<body class="home blog custom-background round-avatars">
+	<div class="Yarn_Background" style="background-image: url(statics/images/8.jpg);"></div>
+	<div th:replace="~{fragments/header::header}"></div>
+	<div id="main" class="content">
+		<div class="container">
+			<section class="post_content">
+
+				<!-- Create a new Blog (Admin Only) -->
+				<div sec:authorize="hasAnyAuthority('ADMIN')">
+					<div class="post post-layout-list" data-aos="fade-up">
+						<header class="post_header">
+							<p class="status_btn" style="font-size: xx-large; color: #918f90;">Create a new blog</p>
+						</header>
+						<!-- Button to create a new Blog -->
+						<div class="button_su" style="width: 130px; height: 50px; position: relative; left: 15px; bottom: -50px">
+							<span class="su_button_circle"> </span>
+							<a th:href="@{~/addBlog}" class="button_su_inner">
+								<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 15px">Create</span>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<!-- Search a Blog -->
+				<div class="post post-layout-list" data-aos="fade-up">
+					<header class="post_header">
+						<p class="status_btn" style="font-size: xx-large; color: #918f90;">Search Blogs</p>
+					</header>
+					<br>
+					<br>
+					<form th:action="@{~/search}" method="post">
+							<span class="input input--minoru">
+								<input class="input__field input__field--yoko" type="text" name="keyword" id="input-16" />
+								<label class="input__label input__label--yoko" for="input-16">
+									<span style="font-size: medium;" class="input__label-content input__label-content--yoko">Hey guys, what are you looking for?</span>
+								</label>
+							</span>
+						<button type="submit" class="bubbly-button" style="width: 150px; height: 50px; position: relative; left: 200px; bottom: 89px">
+							<span class="status_btn" style="color: white; position: relative; right: 0px; bottom: 5px">Go!!</span>
+						</button>
+					</form>
+				</div>
+
+				<!-- Topics -->
+				<div class="post post-layout-list" data-aos="fade-up" style="position: relative; left: 0px; top: 200px">
+					<!-- topicList here contains real Topic Objects -->
+					<div class="tagcloud status_btn" >
+						<span th:each="topic:${topicList}">
+							<a th:href="@{'/searchTopic?topicId=' + ${topic.id}}" th:text="${topic.topic}"></a>
+						</span>
+					</div>
+				</div>
+				<div class="post post-layout-list" data-aos="fade-up" style="position: relative; top: -300px">
+					<br>
+					<header class="post_header">
+						<p class="status_btn" style="font-size: xx-large; color: #918f90;">Topics</p>
+					</header>
+					<br>
+				</div>
+
+				<hr style="position: relative; top: -15px">
+
+				<!-- Blog list -->
+				<div class="post post-layout-list" data-aos="fade-up">
+					<br>
+					<header class="post_header">
+						<p class="status_btn" style="font-size: xx-large; color: #918f90;">My Blogs</p>
+					</header>
+					<br>
+				</div>
+				<div th:each="blog:${blogList}" class="post post-layout-list" data-aos="fade-up">
+					<div class="postnormal review ">
+						<div class="post-container review-item">
+							<div class="row review-item-wrapper">
+								<div class="col-sm-3">
+									<a rel="nofollow" th:href="@{'/blogDetail?id=' + ${blog.id}}">
+										<div class="review-item-img" th:style="'background-image: url(/upload/' + ${blog.cover} + ');'"></div>
+									</a>
+								</div>
+								<div class="col-sm-9 flex-xs-middle">
+									<div class="review-item-title">
+										<a th:href="@{'/blogDetail?id=' + ${blog.id}}" rel="bookmark" th:text="${blog.title}"></a>
+									</div>
+									<div class="review-item-creator">
+										<b>Published at: </b>
+										<span th:text="${blog.createdTime}"></span>
+									</div>
+									<span class="review-item-info">
+										<b>Total Views: </b>
+										<span th:text="${blog.viewNumber}"></span>
+									</span>
+								</div>
+							</div>
+							<div class="review-bg-wrapper">
+								<div class="bg-blur" th:style="'background-image: url(/upload/' + ${blog.cover} + ');'"></div>
+							</div>
+						</div>
+						<div class="post-container">
+							<div class="entry-content" th:text="${blog.content}" style="width:767px; height:90px; overflow:hidden; text-overflow:ellipsis"></div>
+							<div class="post-footer">
+								<a class="gaz-btn primary" th:href="@{'/blogDetail?id=' + ${blog.id}}">READ MORE</a>
+								<span class="total-comments-on-post pull-right">
+									<a th:href="@{'/blogDetail?id=' + ${blog.id}}">
+										<span th:text="${blog.commentNumber}"></span>
+										Comment<span th:if="${blog.commentNumber > 1}" th:text="s"></span>
+									</a>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<div th:replace="~{fragments/footer::footer}"></div>
+	<script type='text/javascript' src='statics/js/jquery.min.js'></script>
+	<script type='text/javascript' src='statics/js/plugins.js'></script>
+	<script type='text/javascript' src='statics/js/script.js'></script>
+	<script type='text/javascript' src='statics/js/particles.js'></script>
+	<script type='text/javascript' src='statics/js/aos.js'></script>
+	<script src="layer/layer.js"></script>
+	<!-- button样式 -->
+	<script>
+		$(".button_su_inner").mouseenter(function(e) {
+			var parentOffset = $(this).offset();
+
+			var relX = e.pageX - parentOffset.left;
+			var relY = e.pageY - parentOffset.top;
+			$(this).prev(".su_button_circle").css({
+				"left" : relX,
+				"top" : relY
+			});
+			$(this).prev(".su_button_circle").removeClass("desplode-circle");
+			$(this).prev(".su_button_circle").addClass("explode-circle");
+
+		});
+
+		$(".button_su_inner").mouseleave(function(e) {
+
+			var parentOffset = $(this).offset();
+
+			var relX = e.pageX - parentOffset.left;
+			var relY = e.pageY - parentOffset.top;
+			$(this).prev(".su_button_circle").css({
+				"left" : relX,
+				"top" : relY
+			});
+			$(this).prev(".su_button_circle").removeClass("explode-circle");
+			$(this).prev(".su_button_circle").addClass("desplode-circle");
+
+		});
+	</script>
+
+	<!-- 标签 -->
+	<script type="text/javascript">
+		/*3D标签云*/
+		tagcloud({
+			selector : ".tagcloud", //元素选择器
+			fontsize : 16, //基本字体大小, 单位px
+			radius : 100, //滚动半径, 单位px
+			mspeed : "normal", //滚动最大速度, 取值: slow, normal(默认), fast
+			ispeed : "normal", //滚动初速度, 取值: slow, normal(默认), fast
+			direction : 135, //初始滚动方向, 取值角度(顺时针360): 0对应top, 90对应left, 135对应right-bottom(默认)...
+			keep : false
+		//鼠标移出组件后是否继续随鼠标滚动, 取值: false, true(默认) 对应 减速至初速度滚动, 随鼠标滚动
+		});
+	</script>
+
+	<!-- input -->
+	<script type="text/javascript">
+		(function() {
+			// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+			if (!String.prototype.trim) {
+				(function() {
+					// Make sure we trim BOM and NBSP
+					var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+					String.prototype.trim = function() {
+						return this.replace(rtrim, '');
+					};
+				})();
+			}
+
+			[].slice.call(document.querySelectorAll('input.input__field'))
+					.forEach(function(inputEl) {
+						// in case the input is already filled..
+						if (inputEl.value.trim() !== '') {
+							classie.add(inputEl.parentNode, 'input--filled');
+						}
+
+						// events:
+						inputEl.addEventListener('focus', onInputFocus);
+						inputEl.addEventListener('blur', onInputBlur);
+					});
+
+			function onInputFocus(ev) {
+				classie.add(ev.target.parentNode, 'input--filled');
+			}
+
+			function onInputBlur(ev) {
+				if (ev.target.value.trim() === '') {
+					classie.remove(ev.target.parentNode, 'input--filled');
+				}
+			}
+		})();
+	</script>
+
+	<!-- button click效果 -->
+	<script>
+		var animateButton = function(e) {
+
+			e.preventDefault;
+			//reset animation
+			e.target.classList.remove('animate');
+
+			e.target.classList.add('animate');
+			setTimeout(function() {
+				e.target.classList.remove('animate');
+			}, 700);
+		};
+
+		var classname = document.getElementsByClassName("bubbly-button");
+
+		for (var i = 0; i < classname.length; i++) {
+			classname[i].addEventListener('click', animateButton, false);
+		}
+	</script>
+</body>
+</html>

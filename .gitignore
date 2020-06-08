@@ -1,5 +1,5 @@
 HELP.md
-.gradle
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
@@ -13,20 +13,40 @@ build/
 .settings
 .springBeans
 .sts4-cache
+classes/
+.settings/
 
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
-out/
+/out/
 
 ### NetBeans ###
 /nbproject/private/
+/build/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
-.vscode/
+# maven ignore
+target/
+
+# temp ignore
+*.log*
+*.cache
+*.diff
+*.patch
+*.tmp
+*.swp
+
+# system ignore
+.DS_Store
+Thumbs.db
+hs_err_pid*
+
+# sass ignore
+.sass-cache/
+*.css.map

@@ -1,0 +1,101 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>John's Blog</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<link rel="stylesheet" type="text/css" href="statics/css/index.css" media="all" />
+<link rel="stylesheet" type="text/css" href="statics/css/detail.css" />
+	<style>
+		.container {
+			padding: 10px 0px;
+		}
+
+		.post {
+			margin: 0 auto
+		}
+	</style>
+</head>
+
+<body class="home blog custom-background round-avatars" itemscope itemtype="http://schema.org/Organization">
+	<div class="Yarn_Background" style="background-image: url(statics/images/2.png);"></div>
+	<div th:replace="~{fragments/header::header}"></div>
+	<div id="main" class="content">
+		<div class="container">
+			<article id="post-1202" class="js-gallery post-1202 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized tag-11 tag-22 tag-29">
+				<section class="post_content">
+					<header class="post_header">
+						<h1 class="post_title" th:text="${blog.title}"></h1>
+					</header>
+					<div class="post-body js-gallery">
+						<p th:text="${blog.content}"></p>
+
+						<!-- Mood -->
+						<a th:if="${mood != null}" href="" class="blog-card-title-link">
+							<div class="blog-card">
+								<div class="blog-card-thumbnail">
+									<img width="150" height="150" th:src="|upload/${mood.image}|" class="blog-card-thumb-image wp-post-image" alt="" />
+								</div>
+
+								<div class="blog-card-content">
+									<div class="blog-card-date clearfix" th:text="${mood.createdTime}"></div>
+									<div class="blog-card-title" th:text="${mood.title}"></div>
+									<div class="blog-card-excerpt" th:text="${mood.content}"></div>
+								</div>
+							</div>
+						</a>
+
+						<hr th:if="${blog.subTitle != '' || blog.subContent != '' || blog.image != ''}" />
+
+						<p th:if="${blog.subTitle != ''}">
+							<span class="yellow-under" th:text="${blog.subTitle}"></span>
+						</p>
+						<p th:if="${blog.image != ''}">
+							<quote class="pullquote"> <a th:href="|upload/${blog.image}|">
+								<img th:src="|upload/${blog.image}|" alt="" width="1920" height="1080" class="alignnone size-full wp-image-1223" />
+							</a></quote>
+						</p>
+						<p th:if="${blog.subContent != ''}" th:text="${blog.subContent}" style="min-height: 220px"></p>
+					</div>
+					<div class="meta split split--responsive cf">
+						<div class="split__title">
+							<time datetime="2017-10-02 01:44" th:text="${blog.createdTime}"></time>
+							<span class="">
+								<!-- topicList here only contains topic Strings, not Topic Objects -->
+								<a href="" rel="tag" th:each="topic:${topicList}" th:text="${topic}"></a>
+							</span>
+						</div>
+					</div>
+				</section>
+			</article>
+		</div>
+
+		<svg id="dwTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+			<path d="M0 0 L50 100 L100 0 Z"></path>
+		</svg>
+		<div class="wrapper"></div>
+	</div>
+
+	<div th:replace="~{fragments/footer::footer}"></div>
+	<script type="text/javascript">
+		window.onscroll = function() {
+			var scrollTop = document.body.scrollTop;
+			if (scrollTop >= 200) {
+				document.getElementById("NextPrevPosts").style.display = "none"
+			} else {
+				document.getElementById("NextPrevPosts").style.display = "block"
+			}
+		}
+	</script>
+	<script type='text/javascript' src='statics/js/jquery.min.js'></script>
+	<script type='text/javascript' src='statics/js/plugins.js'></script>
+	<script type='text/javascript' src='statics/js/script.js'></script>
+	<script type='text/javascript' src='statics/js/particles.js'></script>
+	<script type='text/javascript' src='statics/js/aos.js'></script>
+	<script type='text/javascript' src='statics/js/prism.js'></script>
+	<script type='text/javascript' src='statics/js/gravatar.js'></script>
+</body>
+
+</html>

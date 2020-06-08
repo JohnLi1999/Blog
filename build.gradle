@@ -1,0 +1,68 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
+group = 'john'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '13'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.SR3")
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-starter-oauth2'
+    implementation 'org.springframework.session:spring-session-core'
+
+    // Spring Security and Thymeleaf
+    compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
+
+    // Spring Security
+    implementation 'org.springframework.security:spring-security-taglibs:5.1.1.RELEASE'
+    implementation 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1'
+
+    // Spring Social
+    implementation 'org.springframework.social:spring-social-core:1.1.6.RELEASE'
+    implementation 'org.springframework.social:spring-social-web:1.1.6.RELEASE'
+    implementation 'org.springframework.social:spring-social-security:1.1.6.RELEASE'
+    implementation 'org.springframework.social:spring-social-config:1.1.6.RELEASE'
+
+    // Resolve Json Path problem
+    compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
+    // Resolve "Configuration Annotation Processor not found in classpath"
+    annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
+
+    // Tencent Cloud SMS Service
+    compile fileTree(dir: 'lib', includes: ['*jar'])
+
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // JUnit
+    testCompile 'junit:junit:4.12'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
