@@ -76,14 +76,14 @@ public class VisitorController {
         // Send message
         System.out.println(verificationCode);
         SmsSingleSender sender = new SmsSingleSender(appId, appKey);
-//        try {
-//            SmsSingleSenderResult result = sender.sendWithParam(nationCode, phone, templateId, params, sign, "", "");
-//            System.out.println(result);
-//        } catch (HTTPException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            SmsSingleSenderResult result = sender.sendWithParam(nationCode, phone, templateId, params, sign, "", "");
+            System.out.println(result);
+        } catch (HTTPException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return verificationCode;
     }
