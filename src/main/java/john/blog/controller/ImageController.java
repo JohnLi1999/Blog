@@ -58,7 +58,7 @@ public class ImageController {
             imageService.saveImage(image);
         }
 
-        return "redirect:/album";
+        return "redirect:/albums";
     }
 
 }
