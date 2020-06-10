@@ -36,33 +36,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Authorization Requests
         http
             .formLogin()
-            // Path of the self-defined login page
-            .loginPage("/login")
-            // Path of the login form when submitting
-            .loginProcessingUrl("/visitorLogin")
-            .successForwardUrl("/")
-            // Handler for login success
-            .successHandler(loginSuccessHandler)
-            // Handler for login failure
-            .failureHandler(loginFailureHandler)
-            .and()
+                // Path of the self-defined login page
+                .loginPage("/login")
+                // Path of the login form when submitting
+                .loginProcessingUrl("/visitorLogin")
+                .successForwardUrl("/")
+                // Handler for login success
+                .successHandler(loginSuccessHandler)
+                // Handler for login failure
+                .failureHandler(loginFailureHandler)
+                .and()
             // Permit all following paths without authorization
             .authorizeRequests()
-            .antMatchers(
-            "/", "/index",
-                        "/login", "/visitorLogin", "/signup", "/visitorSignUp", "/visitorSignUp", "/sendSMS",
-                        "/moods", "/blogs", "/albums", "/links", "/archives", "/search",  "/searchTopic",
-                        "/css/**", "/images/**", "/js/**", "/layer/**", "/social/**", "/statics/**", "/upload/**"
-            )
-            .permitAll()
-            // For all the requests,
-            .anyRequest()
-            // We need them to authenticate
-            .authenticated()
-            .and()
-            // Configure Spring Security so that iframe is allow to have an embedded page
+                .antMatchers(
+                "/", "/index",
+                            "/login", "/visitorLogin", "/signup", "/visitorSignUp", "/visitorSignUp", "/sendSMS",
+                            "/moods", "/blogs", "/albums", "/links", "/archives", "/search",  "/searchTopic",
+                            "/css/**", "/images/**", "/js/**", "/layer/**", "/social/**", "/statics/**", "/upload/**"
+                )
+                .permitAll()
+                // For all the requests, we need them to authenticate
+                .anyRequest().authenticated()
+                .and()
+                // Configure Spring Security so that iframe is allow to have an embedded page
             .headers().frameOptions().disable()
-            .and()
+                .and()
             // Disable CSRF (Cross Site Request Forgery) prevention (跨站请求伪造的防护)
             .csrf().disable()
             .apply(springSocialConfigurer);
