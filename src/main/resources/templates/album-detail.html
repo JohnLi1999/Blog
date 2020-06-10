@@ -162,12 +162,12 @@
 								<p style="display: none;">
 									<input type="hidden" id="ak_js" name="ak_js" value="87" />
 								</p>
-								<div class="comment-form-info">
-									<!-- Only let visitors to leave a message -->
-									<div class="real-time-gravatar" sec:authorize="hasAnyAuthority('VISITOR')">
+								<!-- Only let visitors to leave a message -->
+								<div class="comment-form-info" sec:authorize="hasAnyAuthority('VISITOR')">
+									<div class="real-time-gravatar">
 										<img id="visitor-gravatar" th:src="${session.visitor.image}" alt="avatar" />
 									</div>
-									<p class="input-row" sec:authorize="hasAnyAuthority('VISITOR')">
+									<p class="input-row">
 										<i class="row-icon"></i>
 										<textarea class="text_area" rows="3" cols="80" name="content" id="comment" tabindex="4" placeholder="Don't you want to say something? (°∀°)ﾉ..."></textarea>
 										<input type="submit" name="submit" class="button" id="submit" tabindex="5" value="Send" />
