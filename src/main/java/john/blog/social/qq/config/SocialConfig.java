@@ -1,6 +1,7 @@
 package john.blog.social.qq.config;
 
 import john.blog.properties.BlogSecurityProperties;
+import john.blog.social.jdbc.NoRankJdbcUsersConnectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +10,6 @@ import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.*;
-import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.social.security.SpringSocialConfigurer;
@@ -37,7 +37,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
     // Save QQ user information into database
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
-        JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
+        NoRankJdbcUsersConnectionRepository repository = new NoRankJdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
         // Set our own way of connection sign up
         repository.setConnectionSignUp(connectionSignUp);
         return repository;

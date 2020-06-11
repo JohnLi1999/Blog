@@ -87,7 +87,7 @@ public class ArchiveController {
             tlo.setCreatedTime(blog.getCreatedTime());
             tlo.setTitle(blog.getTitle());
             tlo.setHref("/blogDetail?id=" + blog.getId());
-            tlo.setOther("(" + blog.getViewNumber() + " views)");
+            tlo.setOther("(" + blog.getViewNumber() + (blog.getViewNumber() > 1 ? " views)" : " view)"));
             blogTimeLineList.add(tlo);
         });
         result[0] = blogTimeLineList;
@@ -99,7 +99,7 @@ public class ArchiveController {
             tlo.setCreatedTime(album.getCreatedTime());
             tlo.setTitle(album.getTitle());
             tlo.setHref("/albumDetail?id=" + album.getId());
-            tlo.setOther("(" + album.getImageNumber() + " PICS)");
+            tlo.setOther("(" + album.getImageNumber() + (album.getImageNumber() > 1 ? " PICS)" : " PIC)"));
             albumTimeLintList.add(tlo);
         });
         result[1] = albumTimeLintList;
