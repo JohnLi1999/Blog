@@ -17,7 +17,7 @@ public class Album {
     private String createdTime;
     private Long imageNumber;
 
-    @OneToMany(targetEntity = Image.class)
+    @OneToMany(targetEntity = Image.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "album_id")
     private Set<Image> images;
 

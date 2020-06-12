@@ -11,7 +11,7 @@ public class Image {
 
     private String image;
 
-    @ManyToOne(targetEntity = Album.class)
+    @ManyToOne(targetEntity = Album.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "album_id")
     private Album album;
 
